@@ -1,18 +1,26 @@
-import express from "express";
-let app= express();
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+// import cors from 'cors';
 
+// Import your route modules
+import authRoutes from './routes/authRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 
-app.get("/",(req,res)=>{
-    res.status(200).send("Server working fine");
-})
-app.get("/all",(req,res)=>{
-    res.status(200).send("All users");
-})
-app.get("/profile/:id",(req,res)=>{
-    let id= req.params.id;
-    res.status(200).send("id is " + id);
-})
+// dotenv.config();
+const app = express();
 
-app.listen(5000, ()=>{
-    console.log("listening on port 5000");
+// app.use(cors({origin: 'http://localhost:5173'}));
+app.use(express.json());
+
+// Use your imported route modules
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
+
+app.get('/', (req, res) => {
+    res.status(200).send('App up and running ✅');
+});
+
+app.listen(process.env.PORT, () => {
+    console.log('listening on port ' + process.env.PORT);
 });
